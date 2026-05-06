@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>A Place to Visit – Balili, Mankayan, Benguet</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ── Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   #f4ede0;
+      --parchment: #ede3ce;
+      --warm-border: #c8b89a;
+      --brown:   #5c3d1e;
+      --text:    #2e2010;
+      --muted:   #6b5740;
+      --accent:  #7a5230;
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+
+    /* ── Page System ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── Site Shell ── */
+    .site-wrapper {
+      max-width: 860px;
+      margin: 0 auto;
+      background: var(--cream);
+      border: 1px solid var(--warm-border);
+      box-shadow: 0 4px 28px rgba(94,62,20,.12);
+    }
+
+    /* ── Header ── */
+    .site-header {
+      text-align: center;
+      padding: 28px 20px 10px;
+      border-bottom: 1px solid var(--warm-border);
+      background: var(--parchment);
+    }
+    .site-header h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.85rem;
+      font-weight: 600;
+      color: var(--brown);
+      letter-spacing: .02em;
+      margin-bottom: 2px;
+    }
+    .site-header .subtitle {
+      font-style: italic;
+      font-size: .92rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    /* ── Navigation ── */
+    .site-nav {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      padding: 8px 0 10px;
+    }
+    .site-nav a {
+      font-family: 'Playfair Display', serif;
+      font-size: .95rem;
+      color: var(--text);
+      text-decoration: none;
+      padding-bottom: 2px;
+      border-bottom: 2px solid transparent;
+      transition: border-color .2s, color .2s;
+    }
+    .site-nav a:hover,
+    .site-nav a.active {
+      border-bottom-color: var(--brown);
+      color: var(--brown);
+    }
+
+    /* ── Section Divider ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--warm-border);
+      margin: 0;
+    }
+
+    /* ── HOME – Hero Row ── */
+    .hero-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border-bottom: 1px solid var(--warm-border);
+    }
+    .hero-img-col img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+    .hero-text-col {
+      padding: 28px 28px 28px 24px;
+    }
+    .hero-text-col p {
+      font-size: .95rem;
+      text-align: justify;
+    }
+
+    /* ── Tourist Spots ── */
+    .spots-section {
+      padding: 28px 28px 32px;
+    }
+    .spots-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--brown);
+    }
+    .spots-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .spot-card {
+      cursor: pointer;
+      text-align: center;
+      transition: transform .2s;
+    }
+    .spot-card:hover { transform: translateY(-3px); }
+    .spot-card img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid var(--warm-border);
+      display: block;
+      margin-bottom: 8px;
+    }
+    .spot-card .spot-name {
+      font-size: .82rem;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    /* ── ABOUT PAGE ── */
+    .about-intro {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      padding: 32px 28px;
+      border-bottom: 1px solid var(--warm-border);
+    }
+    .about-intro p { font-size: .95rem; text-align: justify; }
+    .about-intro p + p { margin-top: 14px; }
+    .about-badge {
+      width: 160px;
+      flex-shrink: 0;
+    }
+    .about-badge img {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 2px solid var(--warm-border);
+    }
+    .about-footer-note {
+      padding: 20px 28px;
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── SPOT DETAIL PAGE ── */
+    .spot-header {
+      text-align: center;
+      padding: 26px 20px 14px;
+      border-bottom: 1px solid var(--warm-border);
+      background: var(--parchment);
+    }
+    .spot-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--brown);
+    }
+    .spot-header .spot-location {
+      font-style: italic;
+      font-size: .88rem;
+      color: var(--muted);
+    }
+
+    /* layout A: image left + text right (Cafe, Baangan) */
+    .detail-layout-a {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border-bottom: 1px solid var(--warm-border);
+    }
+    .detail-layout-a .img-col { display: flex; flex-direction: column; gap: 0; }
+    .detail-layout-a .img-col img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+    .detail-layout-a .img-col .img-caption {
+      padding: 10px 14px;
+      font-size: .8rem;
+      font-style: italic;
+      color: var(--muted);
+      background: var(--parchment);
+      border-top: 1px solid var(--warm-border);
+    }
+    .detail-layout-a .text-col {
+      padding: 26px 24px;
+      border-left: 1px solid var(--warm-border);
+    }
+    .detail-layout-a .text-col p { font-size: .93rem; text-align: justify; }
+    .detail-layout-a .text-col p + p { margin-top: 12px; }
+
+    /* layout B: images top + text bottom (Madalipey, Lay-odan) */
+    .detail-layout-b {}
+    .detail-layout-b .imgs-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      border-bottom: 1px solid var(--warm-border);
+    }
+    .detail-layout-b .imgs-row img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+    .detail-layout-b .imgs-row img + img { border-left: 1px solid var(--warm-border); }
+    .detail-layout-b .text-block {
+      padding: 24px 28px;
+    }
+    .detail-layout-b .text-block p { font-size: .93rem; text-align: justify; }
+    .detail-layout-b .text-block p + p { margin-top: 10px; }
+
+    /* Baangan – 2×2 image grid */
+    .imgs-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: var(--warm-border);
+    }
+    .imgs-2col img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      text-align: center;
+      padding: 16px 20px;
+      font-size: .8rem;
+      color: var(--muted);
+      border-top: 1px solid var(--warm-border);
+      background: var(--parchment);
+      line-height: 1.6;
+    }
+
+    /* ── Back button ── */
+    .back-btn {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-family: 'EB Garamond', serif;
+      font-size: .88rem;
+      padding: 10px 20px;
+      cursor: pointer;
+      text-decoration: underline;
+      display: block;
+    }
+    .back-btn:hover { color: var(--brown); }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .hero-row { grid-template-columns: 1fr; }
+      .hero-img-col img { height: 200px; }
+      .spots-grid { grid-template-columns: repeat(2, 1fr); }
+      .about-intro { grid-template-columns: 1fr; }
+      .about-badge { width: 100%; text-align: center; }
+      .about-badge img { width: 130px; height: 130px; }
+      .detail-layout-a { grid-template-columns: 1fr; }
+      .detail-layout-a .text-col { border-left: none; border-top: 1px solid var(--warm-border); }
+      .detail-layout-b .imgs-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ══════════════════════════════════════════
+     PAGE: HOME
+══════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <div class="site-wrapper">
+
+    <!-- Header -->
+    <header class="site-header">
+      <h1>A Place to Visit</h1>
+      <p class="subtitle">Balili, Mankayan, Benguet</p>
+      <nav class="site-nav">
+        <a href="#" class="active" onclick="showPage('home');return false;">Home</a>
+        <a href="#" onclick="showPage('about');return false;">About</a>
+      </nav>
+    </header>
+
+    <!-- Hero -->
+    <div class="hero-row">
+      <div class="hero-img-col">
+        <img
+          src="./Layodan/Pic.jpg"
+          alt="Scenic mountain view of Balili"
+        />
+      </div>
+      <div class="hero-text-col">
+        <p>
+          <strong>Welcome to Balili</strong>, a peaceful destination known for its beautiful
+          views, fresh mountain air, and relaxing tourist spots. Discover simple yet
+          amazing places perfect for relaxation and memorable experiences.
+        </p>
+      </div>
+    </div>
+
+    <!-- Tourist Spots -->
+    <section class="spots-section">
+      <h2>Our Tourist Spots</h2>
+      <div class="spots-grid">
+
+        <div class="spot-card" onclick="showPage('spot-cafe')">
+          <img
+            src="./Inverted/inverted1.jpg"
+            alt="Upside Down Cafe and Homestay"
+          />
+          <p class="spot-name">Upside Down Cafe and Homestay</p>
+        </div>
+
+        <div class="spot-card" onclick="showPage('spot-madalipey')">
+          <img
+            src="./Madalipey/Photo.jpg"
+            alt="Madalipey View Deck"
+          />
+          <p class="spot-name">Madalipey View Deck</p>
+        </div>
+
+        <div class="spot-card" onclick="showPage('spot-baangan')">
+          <img
+            src="./Baangan/Pic.jpg"
+            alt="Baangan Escaped"
+          />
+          <p class="spot-name">Baangan Escaped</p>
+        </div>
+
+        <div class="spot-card" onclick="showPage('spot-layodan')">
+          <img
+            src="./Layodan/balili.jpg"
+            alt="Lay-odan Farm"
+          />
+          <p class="spot-name">Lay-odan Farm</p>
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      &copy; 2026 Cymar Tudlong. All rights reserved.<br/>
+      All images are credited to their rightful owners. No copyright infringement intended.<br/>
+      This website is for educational purposes only.
+    </footer>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PAGE: ABOUT
+══════════════════════════════════════════ -->
+<div id="page-about" class="page">
+  <div class="site-wrapper">
+
+    <header class="site-header">
+      <h1>A Place to Visit</h1>
+      <p class="subtitle">Balili, Mankayan, Benguet</p>
+      <nav class="site-nav">
+        <a href="#" onclick="showPage('home');return false;">Home</a>
+        <a href="#" class="active" onclick="showPage('about');return false;">About</a>
+      </nav>
+    </header>
+
+    <div class="about-intro">
+      <div>
+        <p>
+          Balili is a peaceful and beautiful place known for its cool climate, fresh air,
+          and scenic mountain views. It offers tourist spots where visitors can enjoy
+          nature and take memorable photos.
+        </p>
+        <p>
+          This website was created to promote local tourism and help people discover the
+          beauty of Balili. It also serves as a simple project to showcase different
+          places worth visiting in the area.
+        </p>
+      </div>
+      <div class="about-badge">
+        <img
+          src="./Baangan/logo.jpg"
+          alt="Barangay Balili badge"
+        />
+      </div>
+    </div>
+
+    <div class="about-footer-note">
+      &copy; 2026 Cymar Tudlong. All rights reserved.<br/>
+      All images are credited to their rightful owners. No copyright infringement intended.<br/>
+      This website is for educational purposes only.
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PAGE: SPOT – Upside Down Cafe & Homestay
+══════════════════════════════════════════ -->
+<div id="page-spot-cafe" class="page">
+  <div class="site-wrapper">
+
+    <div class="spot-header">
+      <h2>Upside Down Cafe and Homestay</h2>
+      <p class="spot-location">Cada, Balili, Mankayan, Benguet</p>
+    </div>
+
+    <div class="detail-layout-a">
+      <div class="img-col">
+        <img
+          src="./Inverted/inverted2.jpg"
+          alt="Upside Down Cafe exterior"
+        />
+        <div class="img-caption">
+          Upside Down Café &amp; Homestay is owned and managed by Mr. &amp; Mrs. Poleen Chloe Wilbur
+        </div>
+      </div>
+      <div class="text-col">
+        <p>
+          They serve their signature Balili Arabica Coffee, expertly prepared by the
+          owner-barista, with favorites like Café Americano, Cappuccino, and Caramel
+          Macchiato.
+        </p>
+        <p>
+          They also offer delicious meals similar to Good Taste Baguio—don't miss their
+          pancit! Located in Cada Plateau, Buguias (15–20 minutes from Abatan), the café
+          features an inverted house, stunning sea of clouds, cool weather, and scenic
+          vegetable landscapes—perfect for a relaxing visit.
+        </p>
+      </div>
+    </div>
+
+    <button class="back-btn" onclick="showPage('home')">← Back to Home</button>
+
+    <footer class="site-footer">
+      &copy; 2026 Cymar Tudlong. All rights reserved.
+    </footer>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PAGE: SPOT – Madalipey View Deck
+══════════════════════════════════════════ -->
+<div id="page-spot-madalipey" class="page">
+  <div class="site-wrapper">
+
+    <div class="spot-header">
+      <h2>Madalipey View Deck</h2>
+      <p class="spot-location">Am-Am, Balili, Mankayan, Benguet</p>
+    </div>
+
+    <div class="detail-layout-b">
+      <div class="imgs-row">
+        <img
+          src="./Madalipey/Pic1.jpg"
+          alt="Madalipey View Deck panorama"
+        />
+        <img
+          src="./Madalipey/Pic2.jpg"
+          alt="Mountain view from deck"
+        />
+        <img
+          src="./Madalipey/Pic3.jpg"
+          alt="Scenic valley"
+        />
+      </div>
+      <div class="text-block">
+        <p>
+          Am-am View Deck – A massive boulderstone on top of a mountain in Barangay Balili,
+          Mankayan, offering breathtaking views of eastern Ilocos Sur, including historic
+          Bessang and Tirad Passes. Enjoy scenic mountains of Tadian (Mt. Mogao), Sabangan
+          (Mt. Kalawitan), Bauko (Mt. Polis), and surrounding vegetable gardens.
+        </p>
+        <p>
+          Beneath the deck lies an ancient pine-wood coffin that has lasted for centuries.
+        </p>
+      </div>
+    </div>
+
+    <button class="back-btn" onclick="showPage('home')">← Back to Home</button>
+
+    <footer class="site-footer">
+      &copy; 2026 Cymar Tudlong. All rights reserved.
+    </footer>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PAGE: SPOT – Baangan Escaped
+══════════════════════════════════════════ -->
+<div id="page-spot-baangan" class="page">
+  <div class="site-wrapper">
+
+    <div class="spot-header">
+      <h2>Baangan Escaped</h2>
+      <p class="spot-location">Am-Am, Balili, Mankayan, Benguet</p>
+    </div>
+
+    <div class="detail-layout-a">
+      <div class="img-col">
+        <div class="imgs-2col">
+          <img
+            src="./Baangan/Pic1.jpg"
+            alt="Collage of Baangan views"
+          />
+          <img
+            src="./Baangan/Pic2.jpg"
+            alt="Waterfall view"
+          />
+          <img
+            src="./Baangan/Pic3.jpg"
+            alt="falls and mountain view"
+          />
+          <img
+            src="./Baangan/Pic4.jpg"
+            alt="Inudey Falls view"
+          />
+        </div>
+      </div>
+      <div class="text-col">
+        <p>
+          Inudey Falls &amp; Baangan Escapade – Another hidden gem to add on your bucket
+          list—the Inudey falls which is a 3-layered cascading waterfalls down from a
+          massive cliff located in the boundary area of Mankayan, Benguet and Tadian,
+          Mt. Province.
+        </p>
+        <p>
+          On top it was a vegetable farmlands with a stunning view of some parts of
+          Benguet and Mountain Province areas. You may get to enjoy watching sunrise
+          with sea of clouds view early in the morning.
+        </p>
+      </div>
+    </div>
+
+    <button class="back-btn" onclick="showPage('home')">← Back to Home</button>
+
+    <footer class="site-footer">
+      &copy; 2026 Cymar Tudlong. All rights reserved.
+    </footer>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PAGE: SPOT – Lay-odan Farm
+══════════════════════════════════════════ -->
+<div id="page-spot-layodan" class="page">
+  <div class="site-wrapper">
+
+    <div class="spot-header">
+      <h2>Lay-odan Farm</h2>
+      <p class="spot-location">Mogao, Balili, Mankayan, Benguet</p>
+    </div>
+
+    <div class="detail-layout-b">
+      <div class="imgs-row">
+        <img
+          src="./Layodan/Pic1.jpg"
+          alt="Lay-odan Farm scenery"
+        />
+        <img
+          src="./Layodan/Pic2.jpg"
+          alt="sodpak falls view"
+        />
+        <img
+          src="./Layodan/Pic3.jpg"
+          alt="Mountain backdrop"
+        />
+      </div>
+      <div class="text-block">
+        <p>
+          Lay-odan Farm – Experience the unique aroma, character, and soul of coffees grown
+          from the same soil, carefully cupped and tested on-site. Nearby, Sodpak Falls
+          offers a refreshing natural escape, with its cascading waters and scenic surroundings
+          perfect for a relaxing visit.
+        </p>
+        <p>
+          Beyond the Four Corners of Lay-odan…<br/>
+          Step further and discover Dekkan – one of the many hidden corners of Balili.<br/>
+          Wild trails, quiet mountains, and stories waiting to be explored.
+        </p>
+      </div>
+    </div>
+
+    <button class="back-btn" onclick="showPage('home')">← Back to Home</button>
+
+    <footer class="site-footer">
+      &copy; 2026 Cymar Tudlong. All rights reserved.
+    </footer>
+
+  </div>
+</div>
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  function showPage(id) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    // Show target
+    const target = document.getElementById('page-' + id);
+    if (target) {
+      target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+</script>
+
+</body>
+</html>
